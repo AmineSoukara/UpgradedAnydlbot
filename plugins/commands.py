@@ -57,21 +57,22 @@ def get_me_info(bot, update):
         reply_to_message_id=update.message_id
     )
 
-
 @pyrogram.Client.on_message(pyrogram.Filters.command(["start"]))
-async def start(bot, update):
-    # logger.info(update)
-    TRChatBase(update.from_user.id, update.text, "/start")
-    await bot.send_message(
-                chat_id=update.chat.id,
-                text=Translation.START_TEXT.format(update.from_user.first_name),
-                reply_markup = InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("About", callback_data="about"),
-                    InlineKeyboardButton("help", callback_data="morehelp")],
-                    [InlineKeyboardButton("⭕ Developer ⭕", url="t.me/AmineSoukara")
-                    ]]
-                )
-            )
+async def start(c, m):
+      button = [[
+                InlineKeyboardButton("💬 Updates Channel", url="t.me/DamienSoukara"),
+                InlineKeyboardButton("🗣 Support Group", url="t.me/damienhelp"),
+                ],
+                [
+                InlineKeyboardButton("ℹ About", callback_data="about"),
+                InlineKeyboardButton("🤔 Help", callback_data="morehelp")
+                ],
+                [InlineKeyboardButton("🤴 Developer 🤴", url="t.me/AmineSoukara")]]
+      markup = InlineKeyboardMarkup(button)
+      await c.send_message(chat_id=m.chat.id,
+                           text=Translation.START_TEXT.format(m.from_user.first_name),
+                           reply_to_message_id=m.message_id,
+                           reply_markup=markup)
 
 
 @pyrogram.Client.on_message(pyrogram.Filters.command(["upgrade"]))

@@ -59,14 +59,19 @@ def get_me_info(bot, update):
 
 
 @pyrogram.Client.on_message(pyrogram.Filters.command(["start"]))
-def start(bot, update):
+async def start(bot, update):
     # logger.info(update)
     TRChatBase(update.from_user.id, update.text, "/start")
-    bot.send_message(
-        chat_id=update.chat.id,
-        text=Translation.START_TEXT,
-        reply_to_message_id=update.message_id
-    )
+    await bot.send_message(
+                chat_id=update.chat.id,
+                text=Translation.START_TEXT.format(update.from_user.first_name),
+                reply_markup = InlineKeyboardMarkup(
+                    [[InlineKeyboardButton("About", callback_data="about"),
+                    InlineKeyboardButton("help", callback_data="morehelp")],
+                    [InlineKeyboardButton("⭕ Developer ⭕", url="t.me/AmineSoukara")
+                    ]]
+                )
+            )
 
 
 @pyrogram.Client.on_message(pyrogram.Filters.command(["upgrade"]))
